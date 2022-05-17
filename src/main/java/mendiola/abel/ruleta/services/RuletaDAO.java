@@ -10,6 +10,8 @@ public interface RuletaDAO
     // Requerimiento No5
     public Iterable<Ruleta> buscarTodos();
 
+    public Ruleta guardar(Ruleta entidad);
+
     // Requerimiento No2 Abrir,  Requerimiento No4 Cerrar
     public Ruleta actualizarRuleta(Ruleta ruletaEncontrada, Ruleta ruleta);
 

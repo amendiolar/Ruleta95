@@ -1,6 +1,9 @@
 package mendiola.abel.ruleta.controllers;
 
 import mendiola.abel.ruleta.exceptions.BadRequestException;
+import mendiola.abel.ruleta.exceptions.NotFoundException;
+import mendiola.abel.ruleta.mapper.RuletaMapper;
+import mendiola.abel.ruleta.models.dto.RuletaDTO;
 import mendiola.abel.ruleta.models.entities.Ruleta;
 import mendiola.abel.ruleta.services.RuletaDAO;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -49,7 +52,13 @@ public class RuletaController
         return ruleta;
     }
 
-    @PostMapping
+    /**
+     * 1. Endpoint de creación de nuevas ruletas que devuelva el id de la nueva ruleta creada
+     * @return Retorna una lista de ruletas en DTO
+     * @NotFoundException En caso de que no encuentre ningun elemento en la base de datos
+     * @author AMR - 17-mayo-2022
+     */
+    @PostMapping("/ruleta/crear")
     public ResponseEntity<?> guardarRuleta(@Valid @RequestBody Ruleta ruleta, BindingResult result)
     {
         Map<String, Object> validaciones = new HashMap<String, Object>();
@@ -65,63 +74,29 @@ public class RuletaController
 
         Ruleta ruletaGuardada = ruletaDao.guardar(ruleta);
 
-        return new ResponseEntity<Carrera>(carreraGuardada, HttpStatus.CREATED);
+        return new ResponseEntity<Ruleta>(ruletaGuardada, HttpStatus.CREATED);
     }
+
+
 
     /**
-     * Endoint para actualizar un objeto de tipo carrera
-     * @param carreraId Parámetro para buscar la carrera
-     * @param carrera Objeto con la información a modificar
-     * @return Retorna un objeto de tipo Carrera con la información actualizada
-     * @NotFoundException En caso de que falle actualizando el objeto carrera
-     * @author NDSC - 06/12/2021
-     */
-    @PutMapping("/upd/carreraId/{carreraId}")
-    public ResponseEntity<?> actualizarCarrera(@PathVariable Integer carreraId, @RequestBody Carrera carrera)
-    {
-        Optional<Carrera> oCarrera = carreraDao.buscarPorId(carreraId);
-
-        if(!oCarrera.isPresent())
-            throw new NotFoundException(String.format("La carrera con ID: %d no existe", carreraId));
-
-        Carrera carreraActualizada = carreraDao.actualizar(oCarrera.get(), carrera);
-
-        return new ResponseEntity<Carrera>(carreraActualizada, HttpStatus.OK);
-    }
-
-    @DeleteMapping("/carreraId/{carreraId}")
-    public ResponseEntity<?> eliminarCarrera(@PathVariable Integer carreraId)
-    {
-        Map<String, Object> respuesta = new HashMap<String, Object>();
-
-        Optional<Carrera> carrera = carreraDao.buscarPorId(carreraId);
-
-        if(!carrera.isPresent())
-            throw new NotFoundException(String.format("La carrera con ID: %d no existe", carreraId));
-
-        carreraDao.eliminarPorId(carreraId);
-        respuesta.put("OK", "Carrera ID: " + carreraId + " eliminada exitosamente");
-        return new ResponseEntity<Map<String, Object>>(respuesta, HttpStatus.ACCEPTED);
-    }
-
-    /**
-     * Endpoint para consultar todas las carreras
-     * @return Retorna una lista de carreras en DTO
+     * 5. Endpoint de listado de ruletas creadas con sus estados (abierta o cerrada)
+     * @return Retorna una lista de ruletas en DTO
      * @NotFoundException En caso de que no encuentre ningun elemento en la base de datos
-     * @author NDSC - 07-12-2021
+     * @author AMR - 17-mayo-2022
      */
-    @GetMapping("/carreras/dto")
-    public ResponseEntity<?> obtenerCarrerasDTO()
+    @GetMapping("/ruletas/dto")
+    public ResponseEntity<?> obtenerRuletasDTO()
     {
-        List<Carrera> carreras = (List<Carrera>) carreraDao.buscarTodos();
+        List<Ruleta> ruletas = (List<Ruleta>) ruletaDao.buscarTodos();
 
-        if(carreras.isEmpty())
-            throw new NotFoundException("No existen carreras en la base de datos.");
+        if(ruletas.isEmpty())
+            throw new NotFoundException("No existen ruletas en la base de datos.");
 
-        List<CarreraDTO> listaCarreras = carreras
+        List<RuletaDTO> listaRuletas = ruletas
                 .stream()
-                .map(CarreraMapper::mapCarrera)
+                .map(RuletaMapper::mapRuleta)
                 .collect(Collectors.toList());
-        return new ResponseEntity<List<CarreraDTO>>(listaCarreras, HttpStatus.OK);
+        return new ResponseEntity<List<RuletaDTO>>(listaRuletas, HttpStatus.OK);
     }
 }
