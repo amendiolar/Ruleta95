@@ -54,11 +54,11 @@ public class RuletaController
 
     /**
      * 1. Endpoint de creación de nuevas ruletas que devuelva el id de la nueva ruleta creada
-     * @return Retorna una lista de ruletas en DTO
-     * @NotFoundException En caso de que no encuentre ningun elemento en la base de datos
+     * @return Retorna el id de la nueva ruleta creada
+     * @BadRequestException En caso de que no se solicite correctamente
      * @author AMR - 17-mayo-2022
      */
-    @PostMapping("/ruleta/crear")
+    @PostMapping("/crear")
     public ResponseEntity<?> guardarRuleta(@Valid @RequestBody Ruleta ruleta, BindingResult result)
     {
         Map<String, Object> validaciones = new HashMap<String, Object>();
@@ -75,6 +75,62 @@ public class RuletaController
         Ruleta ruletaGuardada = ruletaDao.guardar(ruleta);
 
         return new ResponseEntity<Ruleta>(ruletaGuardada, HttpStatus.CREATED);
+    }
+
+
+    /**
+     *
+     2. Endpoint de apertura de ruleta (el input es un id de ruleta) que permita las
+     posteriores peticiones de apuestas, este debe devolver simplemente un estado
+     queconfirme que la operación fue exitosa o denegada
+     * @param ruletaId
+     * @param ruleta
+     * @return
+     */
+    @PutMapping("/apertura/ruletaId/{ruletaId}")
+    public ResponseEntity<?> actualizarRuleta(@PathVariable Integer ruletaId, @RequestBody Ruleta ruleta)
+    {
+        Optional<Ruleta> oRuleta = ruletaDao.buscarPorId(ruletaId);
+
+        if(!oRuleta.isPresent())
+            throw new NotFoundException(String.format("Las ruleta con ID %d no existe", ruletaId));
+
+        Ruleta ruletaActualizado = ((RuletaDAO)ruletaDao).actualizarRuleta(oRuleta.get(),ruleta);
+        return new ResponseEntity<Ruleta>(ruletaActualizado, HttpStatus.OK);
+    }
+
+
+    /**
+     *
+     3. Endpoint de apuesta a un número (los números válidos para apostar son del 0 al
+     36)o color (negro o rojo) de la ruleta una cantidad determinada de dinero (máximo
+     10.000 dólares) a una ruleta abierta.
+     * @param ruletaId
+     * @param ruleta
+     * @return
+     */
+
+    @PutMapping("/apostar/ruletaId/{ruletaId}/numero/{numero}/color/{color}/valorApuesta/{valorApuesta}/estado/{estaAbierta}")
+    public ResponseEntity<?> adicionarApuesta(@PathVariable long ruletaId, String color, Integer numero, Double valorApuesta, Boolean estaAbierta, @RequestBody Ruleta ruleta)
+    {
+        Optional<Ruleta> oRuleta = ruletaDao.buscarPorId(ruletaId);
+
+        if(!oRuleta.isPresent())
+        {
+            throw new NotFoundException(String.format("Las ruleta con ID %d no existe", ruletaId));
+        } else if (color!= "Negro" || color!= "Rojo" ) {
+            throw new BadRequestException("Solo se aceptan Negro o Rojo.");
+        } else if (numero< 0 && numero> 36) {
+            throw new BadRequestException("El numero debe estar entre 0 y 36.");
+        } else if (valorApuesta>10000.0) {
+            throw new BadRequestException("La apuesta maxima es de 10,000 dolares.");
+        } else if (estaAbierta==false) {
+            throw new BadRequestException("La ruleta está cerrada.");
+        } else {
+            Ruleta ruletaActualizado = ((RuletaDAO)ruletaDao).actualizarRuleta(oRuleta.get(),ruleta);
+            return new ResponseEntity<Ruleta>(ruletaActualizado, HttpStatus.OK);
+        }
+
     }
 
 

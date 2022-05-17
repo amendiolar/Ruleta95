@@ -2,6 +2,8 @@ package mendiola.abel.ruleta.services;
 
 import mendiola.abel.ruleta.models.entities.Ruleta;
 
+import java.util.Optional;
+
 public interface RuletaDAO
 {
     // Requerimiento No1
@@ -9,6 +11,8 @@ public interface RuletaDAO
 
     // Requerimiento No5
     public Iterable<Ruleta> buscarTodos();
+
+    public Optional<Ruleta> buscarPorId(long id);
 
     public Ruleta guardar(Ruleta entidad);
 
