@@ -24,14 +24,17 @@ public class Ruleta implements Serializable
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
+    @Column(name = "colores")
+    private String color;
 
-    private String arregloNumeroColor[];
+    @Column(name = "numeros")
+    private Integer numero;
 
     @Column(name = "estaAbierta")
     private Boolean estaAbierta;
 
     @Column(name = "valorApuestas")
-    private Double valorApuestas;
+    private Double valorApuesta;
 
     @Column(name = "fecha_alta")
     private Date fechaAlta;
@@ -39,10 +42,12 @@ public class Ruleta implements Serializable
     @Column(name = "fecha_modificacion")
     private Date fechaModificacion;
 
-    public Ruleta(Integer id, Boolean estaAbierta, Double valorApuestas) {
+    public Ruleta(Integer id, String color, Integer numero, Boolean estaAbierta, Double valorApuesta) {
         this.id = id;
+        this.color = color;
+        this.numero = numero;
         this.estaAbierta = estaAbierta;
-        this.valorApuestas = valorApuestas;
+        this.valorApuesta = valorApuesta;
     }
 
     @Override
@@ -50,14 +55,12 @@ public class Ruleta implements Serializable
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Ruleta ruleta = (Ruleta) o;
-        return Objects.equals(id, ruleta.id) && Arrays.equals(arregloNumeroColor, ruleta.arregloNumeroColor) && Objects.equals(estaAbierta, ruleta.estaAbierta) && Objects.equals(valorApuestas, ruleta.valorApuestas) && Objects.equals(fechaAlta, ruleta.fechaAlta) && Objects.equals(fechaModificacion, ruleta.fechaModificacion);
+        return Objects.equals(id, ruleta.id) && Objects.equals(color, ruleta.color) && Objects.equals(numero, ruleta.numero) && Objects.equals(estaAbierta, ruleta.estaAbierta) && Objects.equals(valorApuesta, ruleta.valorApuesta) && Objects.equals(fechaAlta, ruleta.fechaAlta) && Objects.equals(fechaModificacion, ruleta.fechaModificacion);
     }
 
     @Override
     public int hashCode() {
-        int result = Objects.hash(id, estaAbierta, valorApuestas, fechaAlta, fechaModificacion);
-        result = 31 * result + Arrays.hashCode(arregloNumeroColor);
-        return result;
+        return Objects.hash(id, color, numero, estaAbierta, valorApuesta, fechaAlta, fechaModificacion);
     }
 
     @PrePersist
