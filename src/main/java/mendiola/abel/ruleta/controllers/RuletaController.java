@@ -135,6 +135,8 @@ public class RuletaController
 
 
 
+
+
     /**
      * 5. Endpoint de listado de ruletas creadas con sus estados (abierta o cerrada)
      * @return Retorna una lista de ruletas en DTO

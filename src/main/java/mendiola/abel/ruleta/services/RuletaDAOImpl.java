@@ -12,8 +12,8 @@ public class RuletaDAOImpl implements RuletaDAO
     @Autowired
     public RuletaDAOImpl(RuletaRepository repository)
     {
-        super();
-    };
+        super(repository);
+    }
 
 
     @Override
@@ -28,18 +28,18 @@ public class RuletaDAOImpl implements RuletaDAO
 
     @Override
     @Transactional
-    public Ruleta actualizarRuleta(Ruleta ruletaEncontrada, Ruleta ruleta)
+    public Ruleta actualizarRuleta(Ruleta ruletaEncontrado, Ruleta ruleta)
     {
-        Ruleta ruletaActualizada = null;
-        ruletaEncontrada.setColor();
-        ruletaEncontrada.setNumero();
-        ruletaEncontrada.setValorApuesta();
-        ruletaActualizada = repository.save(ruletaEncontrada);
-        return ruletaActualizada;
+        Ruleta ruletaActualizado = null;
+        ruletaEncontrado.setColor();
+        ruletaEncontrado.setNumero();
+        ruletaEncontrado.setValorApuesta();
+        ruletaActualizado = repository.save(ruletaEncontrado);
+        return ruletaActualizado;
     }
 
     @Override
-    public Ruleta adicionarApuesta(Ruleta ruletaEncontrada, Ruleta ruleta) {
+    public Ruleta adicionarApuesta(Ruleta ruletaEncontrado, Ruleta ruleta) {
         return null;
     }
 }
