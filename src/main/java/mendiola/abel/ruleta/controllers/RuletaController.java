@@ -134,6 +134,25 @@ public class RuletaController
     }
 
 
+    /**
+     * 4. Endpoint de cierre apuestas dado un id de ruleta, este Endpoint debe devolver
+     * el resultado de las apuestas hechas desde su apertura hasta el cierre.
+     * @return
+     * @NotFoundException En caso de que no encuentre ningun elemento en la base de datos
+     * @author AMR - 17-mayo-2022
+     */
+    @PutMapping("/cierre/ruletaId/{ruletaId}/estado/{estaAbierta}")
+    public ResponseEntity<?> cerrarRuleta(@PathVariable long ruletaId, Boolean estaAbierto, @RequestBody Ruleta ruleta)
+    {
+        Optional<Ruleta> oRuleta = ruletaDao.buscarPorId(ruletaId);
+
+        if(!oRuleta.isPresent())
+            throw new NotFoundException(String.format("Las ruleta con ID %d no existe", ruletaId));
+
+        Ruleta ruletaActualizado = ((RuletaDAO)ruletaDao).actualizarRuleta(oRuleta.get(),ruleta);
+        return new ResponseEntity<Ruleta>(ruletaActualizado, HttpStatus.OK);
+    }
+
 
 
 

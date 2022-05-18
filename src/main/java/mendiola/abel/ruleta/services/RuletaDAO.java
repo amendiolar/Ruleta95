@@ -21,4 +21,6 @@ public interface RuletaDAO
 
     // Requerimiento No3 Apostar
     public Ruleta adicionarApuesta(Ruleta ruletaEncontrada, Ruleta ruleta);
+
+    public Ruleta cerrarRuleta(Long id);
 }
