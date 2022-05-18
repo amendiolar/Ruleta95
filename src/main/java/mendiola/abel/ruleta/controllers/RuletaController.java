@@ -37,7 +37,7 @@ public class RuletaController
     }
 
     @GetMapping("/id/{ruletaId}")
-    public Ruleta buscarRuletaPorId(@PathVariable Integer ruletaId)
+    public Ruleta buscarRuletaPorId(@PathVariable Long ruletaId)
     {
 		/*Optional<Carrera> oCarrera = carreraDao.buscarPorId(carreraId);
 		if(!oCarrera.isPresent())
@@ -45,7 +45,7 @@ public class RuletaController
 
 		return oCarrera.get();*/
 
-        Ruleta ruleta = ruletaDao.buscarPorId(ruletaId).orElse(null);
+        Ruleta ruleta = ruletaDao.buscarRuletaPorId(ruletaId).orElse(null);
         if(ruleta == null)
             throw new BadRequestException(String.format("La ruleta con ID: %d no existe", ruletaId));
 
@@ -88,9 +88,9 @@ public class RuletaController
      * @return
      */
     @PutMapping("/apertura/ruletaId/{ruletaId}")
-    public ResponseEntity<?> actualizarRuleta(@PathVariable Integer ruletaId, @RequestBody Ruleta ruleta)
+    public ResponseEntity<?> actualizarRuleta(@PathVariable Long ruletaId, @RequestBody Ruleta ruleta)
     {
-        Optional<Ruleta> oRuleta = ruletaDao.buscarPorId(ruletaId);
+        Optional<Ruleta> oRuleta = ruletaDao.buscarRuletaPorId(ruletaId);
 
         if(!oRuleta.isPresent())
             throw new NotFoundException(String.format("Las ruleta con ID %d no existe", ruletaId));
@@ -111,9 +111,9 @@ public class RuletaController
      */
 
     @PutMapping("/apostar/ruletaId/{ruletaId}/numero/{numero}/color/{color}/valorApuesta/{valorApuesta}/estado/{estaAbierta}")
-    public ResponseEntity<?> adicionarApuesta(@PathVariable long ruletaId, String color, Integer numero, Double valorApuesta, Boolean estaAbierta, @RequestBody Ruleta ruleta)
+    public ResponseEntity<?> adicionarApuesta(@PathVariable Long ruletaId, String color, Integer numero, Double valorApuesta, Boolean estaAbierta, @RequestBody Ruleta ruleta)
     {
-        Optional<Ruleta> oRuleta = ruletaDao.buscarPorId(ruletaId);
+        Optional<Ruleta> oRuleta = ruletaDao.buscarRuletaPorId(ruletaId);
 
         if(!oRuleta.isPresent())
         {
@@ -142,9 +142,9 @@ public class RuletaController
      * @author AMR - 17-mayo-2022
      */
     @PutMapping("/cierre/ruletaId/{ruletaId}/estado/{estaAbierta}")
-    public ResponseEntity<?> cerrarRuleta(@PathVariable long ruletaId, Boolean estaAbierto, @RequestBody Ruleta ruleta)
+    public ResponseEntity<?> cerrarRuleta(@PathVariable Long ruletaId, Boolean estaAbierto, @RequestBody Ruleta ruleta)
     {
-        Optional<Ruleta> oRuleta = ruletaDao.buscarPorId(ruletaId);
+        Optional<Ruleta> oRuleta = ruletaDao.buscarRuletaPorId(ruletaId);
 
         if(!oRuleta.isPresent())
             throw new NotFoundException(String.format("Las ruleta con ID %d no existe", ruletaId));

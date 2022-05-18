@@ -12,7 +12,7 @@ public interface RuletaDAO
     // Requerimiento No5
     public Iterable<Ruleta> buscarTodos();
 
-    public Optional<Ruleta> buscarPorId(long id);
+    public Optional<Ruleta> buscarRuletaPorId(Long id);
 
     public Ruleta guardar(Ruleta entidad);
 

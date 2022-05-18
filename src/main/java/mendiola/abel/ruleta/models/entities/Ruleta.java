@@ -22,7 +22,7 @@ public class Ruleta implements Serializable
 {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
+    private Long id;
 
     @Column(name = "colores")
     private String color;
@@ -42,7 +42,7 @@ public class Ruleta implements Serializable
     @Column(name = "fecha_modificacion")
     private Date fechaModificacion;
 
-    public Ruleta(long id, String color, Integer numero, Boolean estaAbierta, Double valorApuesta) {
+    public Ruleta(Long id, String color, Integer numero, Boolean estaAbierta, Double valorApuesta) {
         this.id = id;
         this.color = color;
         this.numero = numero;

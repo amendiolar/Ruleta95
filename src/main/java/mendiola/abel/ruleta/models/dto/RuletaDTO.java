@@ -11,7 +11,7 @@ import lombok.Setter;
 @AllArgsConstructor
 public class RuletaDTO
 {
-    private Integer id;
+    private Long id;
 
     private Boolean estaAbierta;
 }

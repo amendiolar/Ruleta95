@@ -15,6 +15,8 @@ public interface RuletaRepository extends CrudRepository<Ruleta,Integer>
 
     public Iterable<Ruleta> buscarTodos();
 
+    public Optional<Ruleta> buscarRuletaPorId(Long id);
+
     public Ruleta actualizarRuleta(Ruleta ruletaEncontrada, Ruleta ruleta);
 
     public Ruleta adicionarApuesta(Ruleta ruletaEncontrada, Ruleta ruleta);

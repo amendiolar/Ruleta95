@@ -31,7 +31,7 @@ public class RuletaDAOImpl implements RuletaDAO
     }
 
     @Override
-    public Optional<Ruleta> buscarPorId(long id) {
+    public Optional<Ruleta> buscarRuletaPorId(Long id) {
         return Optional.empty();
     }
 
