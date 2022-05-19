@@ -6,21 +6,14 @@ import java.util.Optional;
 
 public interface RuletaDAO
 {
-    // Requerimiento No1
-    public Ruleta crearRuleta(Ruleta entidad);
+    public Ruleta saveRuleta(Ruleta entidad);
 
-    // Requerimiento No5
-    public Iterable<Ruleta> buscarTodos();
-
-    public Optional<Ruleta> buscarRuletaPorId(Long id);
-
-    public Ruleta guardar(Ruleta entidad);
-
-    // Requerimiento No2 Abrir,  Requerimiento No4 Cerrar
     public Ruleta actualizarRuleta(Ruleta ruletaEncontrada, Ruleta ruleta);
 
-    // Requerimiento No3 Apostar
-    public Ruleta adicionarApuesta(Ruleta ruletaEncontrada, Ruleta ruleta);
+    public Optional<Ruleta> findRuletaById(Long id);
 
-    public Ruleta cerrarRuleta(Long id);
+
+    public Iterable<Ruleta> findAll();
+
+
 }

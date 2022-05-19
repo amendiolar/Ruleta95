@@ -21,23 +21,8 @@ public class RuletaDAOImpl implements RuletaDAO
 
 
     @Override
-    public Ruleta crearRuleta(Ruleta entidad) {
-        return null;
-    }
-
-    @Override
-    public Iterable<Ruleta> buscarTodos() {
-        return null;
-    }
-
-    @Override
-    public Optional<Ruleta> buscarRuletaPorId(Long id) {
-        return Optional.empty();
-    }
-
-    @Override
-    public Ruleta guardar(Ruleta entidad) {
-        return null;
+    public Ruleta saveRuleta(Ruleta entidad) {
+        return repository.saveRuleta(Ruleta,entidad);
     }
 
     @Override
@@ -53,12 +38,17 @@ public class RuletaDAOImpl implements RuletaDAO
     }
 
     @Override
-    public Ruleta adicionarApuesta(Ruleta ruletaEncontrado, Ruleta ruleta) {
-        return null;
+    public Optional<Ruleta> findRuletaById(Long id)
+    {
+        return repository.findRuletaById(Long id);
     }
 
+
     @Override
-    public Ruleta cerrarRuleta(Long id) {
-        return null;
+    public Iterable<Ruleta> findAll() {
+        return repository.findAll();
     }
+
+
+
 }

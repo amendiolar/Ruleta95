@@ -1,0 +1,18 @@
+2022-05-18 17:37:14,527 INFO org.springframework.boot.autoconfigure.logging.ConditionEvaluationReportLoggingListener [restartedMain] 
+
+Error starting ApplicationContext. To display the conditions report re-run your application with 'debug' enabled.
+2022-05-18 17:37:14,552 ERROR org.springframework.boot.diagnostics.LoggingFailureAnalysisReporter [restartedMain] 
+
+***************************
+APPLICATION FAILED TO START
+***************************
+
+Description:
+
+Parameter 1 of method gatewayHttpClientFactory in org.springframework.cloud.gateway.config.GatewayAutoConfiguration$NettyConfiguration required a bean of type 'org.springframework.boot.autoconfigure.web.ServerProperties' that could not be found.
+
+
+Action:
+
+Consider defining a bean of type 'org.springframework.boot.autoconfigure.web.ServerProperties' in your configuration.
+

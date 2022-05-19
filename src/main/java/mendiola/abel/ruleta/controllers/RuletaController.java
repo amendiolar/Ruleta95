@@ -26,32 +26,6 @@ public class RuletaController
     @Autowired
     private RuletaDAO ruletaDao;
 
-    @GetMapping("/lista/ruletas")
-    public List<Ruleta> buscarTodas()
-    {
-        List<Ruleta> ruletas = (List<Ruleta>) ruletaDao.buscarTodos();
-        if(ruletas.isEmpty())
-            throw new BadRequestException("No existen ruletas");
-
-        return ruletas;
-    }
-
-    @GetMapping("/id/{ruletaId}")
-    public Ruleta buscarRuletaPorId(@PathVariable Long ruletaId)
-    {
-		/*Optional<Carrera> oCarrera = carreraDao.buscarPorId(carreraId);
-		if(!oCarrera.isPresent())
-			throw new BadRequestException(String.format("La carrera con ID: %d no existe", carreraId));
-
-		return oCarrera.get();*/
-
-        Ruleta ruleta = ruletaDao.buscarRuletaPorId(ruletaId).orElse(null);
-        if(ruleta == null)
-            throw new BadRequestException(String.format("La ruleta con ID: %d no existe", ruletaId));
-
-        return ruleta;
-    }
-
     /**
      * 1. Endpoint de creación de nuevas ruletas que devuelva el id de la nueva ruleta creada
      * @return Retorna el id de la nueva ruleta creada
@@ -59,7 +33,7 @@ public class RuletaController
      * @author AMR - 17-mayo-2022
      */
     @PostMapping("/crear")
-    public ResponseEntity<?> guardarRuleta(@Valid @RequestBody Ruleta ruleta, BindingResult result)
+    public ResponseEntity<?> saveRuleta(@Valid @RequestBody Ruleta ruleta, BindingResult result)
     {
         Map<String, Object> validaciones = new HashMap<String, Object>();
         if(result.hasErrors())
@@ -72,7 +46,7 @@ public class RuletaController
             return new ResponseEntity<Map<String, Object>>(validaciones, HttpStatus.BAD_REQUEST);
         }
 
-        Ruleta ruletaGuardada = ruletaDao.guardar(ruleta);
+        Ruleta ruletaGuardada = ruletaDao.saveRuleta(ruleta);
 
         return new ResponseEntity<Ruleta>(ruletaGuardada, HttpStatus.CREATED);
     }
@@ -90,7 +64,7 @@ public class RuletaController
     @PutMapping("/apertura/ruletaId/{ruletaId}")
     public ResponseEntity<?> actualizarRuleta(@PathVariable Long ruletaId, @RequestBody Ruleta ruleta)
     {
-        Optional<Ruleta> oRuleta = ruletaDao.buscarRuletaPorId(ruletaId);
+        Optional<Ruleta> oRuleta = ruletaDao.findRuletaById(ruletaId);
 
         if(!oRuleta.isPresent())
             throw new NotFoundException(String.format("Las ruleta con ID %d no existe", ruletaId));
@@ -111,9 +85,9 @@ public class RuletaController
      */
 
     @PutMapping("/apostar/ruletaId/{ruletaId}/numero/{numero}/color/{color}/valorApuesta/{valorApuesta}/estado/{estaAbierta}")
-    public ResponseEntity<?> adicionarApuesta(@PathVariable Long ruletaId, String color, Integer numero, Double valorApuesta, Boolean estaAbierta, @RequestBody Ruleta ruleta)
+    public ResponseEntity<?> actualizarApuesta(@PathVariable Long ruletaId, String color, Integer numero, Double valorApuesta, Boolean estaAbierta, @RequestBody Ruleta ruleta)
     {
-        Optional<Ruleta> oRuleta = ruletaDao.buscarRuletaPorId(ruletaId);
+        Optional<Ruleta> oRuleta = ruletaDao.findRuletaById(ruletaId);
 
         if(!oRuleta.isPresent())
         {
@@ -142,9 +116,9 @@ public class RuletaController
      * @author AMR - 17-mayo-2022
      */
     @PutMapping("/cierre/ruletaId/{ruletaId}/estado/{estaAbierta}")
-    public ResponseEntity<?> cerrarRuleta(@PathVariable Long ruletaId, Boolean estaAbierto, @RequestBody Ruleta ruleta)
+    public ResponseEntity<?> saveRuleta(@PathVariable Long ruletaId, Boolean estaAbierto, @RequestBody Ruleta ruleta)
     {
-        Optional<Ruleta> oRuleta = ruletaDao.buscarRuletaPorId(ruletaId);
+        Optional<Ruleta> oRuleta = ruletaDao.findRuletaById(ruletaId);
 
         if(!oRuleta.isPresent())
             throw new NotFoundException(String.format("Las ruleta con ID %d no existe", ruletaId));
@@ -165,7 +139,7 @@ public class RuletaController
     @GetMapping("/ruletas/dto")
     public ResponseEntity<?> obtenerRuletasDTO()
     {
-        List<Ruleta> ruletas = (List<Ruleta>) ruletaDao.buscarTodos();
+        List<Ruleta> ruletas = (List<Ruleta>) ruletaDao.findAll();
 
         if(ruletas.isEmpty())
             throw new NotFoundException("No existen ruletas en la base de datos.");
